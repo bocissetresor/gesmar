@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <title>Dynamic input fields</title>
+    <div class="row">
+        <div class="col-md-4"></div>
+        <div class="col-md-4">
+            <form action="" method="post">
+                <div class="input_fields_wrap">
+
+                    <button class="add_field_button">Ajouter un Ordonnancement</button>
+                    <input type="date" class="form-control mb-3" min="{{ now()->toDateString('Y-m-d') }}" name="date_ordonnacement[]" required>
+                    <input type="number" class="form-control mb-3" name="somme_ordonnacement[]" min="{{ 0 }}" max="1000" required>
+                </div>
+                <button type="submit" class="btn btn-primary">Submit</button>
+            </form>
+        </div>
+        <div class="col-md-4"></div>
+    </div>
+    <script>
+        $(document).ready(function() {
+            var max_fields = 10; //maximum input boxes allowed
+            var wrapper = $(".input_fields_wrap"); //Fields wrapper
+            var add_button = $(".add_field_button"); //Add button ID
+
+            var x = 1; //initlal text box count
+            $(add_button).click(function(e) { //on add input button click
+                e.preventDefault();
+                if (x < max_fields) { //max input box allowed
+                    x++; //text box increment
+                    $(wrapper).append('<div class="input-group mb-3"><input type="date" class="form-control mb-3" name="date_ordonnacement[]" required> <input type="number" class="form-control mb-3" name="somme_ordonnacement[]" min="{{ 0 }}" max="1000" required><div class="input-group-append"><button class="btn btn-outline-danger remove_field" type="button">Remove</button></div></div>'); //add input box
+                }
+            });
+
+            $(wrapper).on("click", ".remove_field", function(e) { //user click on remove text
+                e.preventDefault();
+                $(this).parent('div').parent('div').remove();
+                x--;
+            })
+        });
+    </script>
+    </body>
+
+</html>
